@@ -7,14 +7,20 @@ function app(people){
   var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   switch(searchType){
     case 'yes':
-    searchByName(people);
+      let personsName = searchByName(people)
+        if(personsName.length > 1) {
+        searchByTraits(personsName)
+      }
+      else if(personsName.length == 1) {
+        mainMenu(personsName[0], people)
+      }
     break;
     case 'no':
-    searchByTraits(people);
-    break;
+      searchByTraits(people);
+      break;
     default:
-    alert("Wrong! Please try again, following the instructions dummy. :)");
-    app(people); // restart app
+      alert("Wrong! Please try again, following the instructions dummy. :)");
+      app(people); // restart app
     break;
   }
 }
@@ -47,8 +53,9 @@ function searchByTraits(people) {
       searchByTraits(people);
       break;
   }  
-
+  
   let foundPerson = filteredPeople[0];
+  searchByTraits(filteredPeople);
 
   mainMenu(foundPerson, people);
 
@@ -79,7 +86,7 @@ function searchByWeight(people) {
 function searchByEyeColor(people) {
   let userInputEyeColor = prompt('What color are their eyes?');
   let eyeColorArray = people.filter(function (el) {
-    if(el.eyeColor = userInputEyeColor) {
+    if(el.eyeColor == userInputEyeColor) {
       return true;
     }
   });
@@ -149,7 +156,7 @@ function mainMenu(person, people){
 
   switch(displayOption){
     case "info":
-    let personInfo = 'Id: ' + person.id + '\n' + 'First Name: '+ person.firstName + '\n' + 'Last Name: ' + person.lastName + '\n' + 'Gender: ' + person.gender + '\n' + 'Date of Birth: ' + person.dob + '\n' + 'Height: ' + person.height + '\n' + 'Weight: ' + person.weight + '\n' + 'Eye Color: ' + person.eyeColor + '\n' + 'Occupation:' + person.occupation;
+    let personInfo = 'Id: ' + person.id + '\n' + 'First Name: '+ person.firstName + '\n' + 'Last Name: ' + person.lastName + '\n' + 'Gender: ' + person.gender + '\n' + 'Date of Birth: ' + person.dob + '\n' + 'Height: ' + person.height + '\n' + 'Weight: ' + person.weight + '\n' + 'Eye Color: ' + person.eyeColor + '\n' + 'Occupation: ' + person.occupation;
     alert(personInfo);
     break;
     case "family":
