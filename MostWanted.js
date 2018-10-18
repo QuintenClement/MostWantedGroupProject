@@ -165,7 +165,7 @@ function mainMenu(person, people){
     return app(people); // restart
   }
 
-  var displayOption = prompt("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'");
+  var displayOption = prompt("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'decendents'? Type the option you want or 'restart' or 'quit'");
 
   switch(displayOption){
     case "info":
@@ -175,11 +175,11 @@ function mainMenu(person, people){
     case "family":
       immediateFamily(person, people);
     break;
-    case "descendants":
-    // TODO: get person's descendants
+    case "decendents":
+      hasDecendents(person, people);
     break;
     case "restart":
-    app(people); // restart
+      app(people); // restart
     break;
     case "quit":
     return; // stop execution
@@ -187,29 +187,44 @@ function mainMenu(person, people){
     return mainMenu(person, people); // ask again
   }
 }
+
 function hasDecendents(person, people) {
   let decendents = [];
-  if (person.parents[0] !== undefined) {
-    for (let i = 0; i < person.parents.length; i++) {
-      let parentId = person.parents[i];
-      for (let j = 0; j < people.length; j++) {
-        if (people[i].id === parentId) {
-          people[i].Decendents = person.id
-        }
+  // if (person.parents[0] !== undefined) {
+  //   for (let i = 0; i < person.parents.length; i++) {
+  //     let parentId = person.parents[i];
+  //     for (let j = 0; j < people.length; j++) {
+  //       if (people[i].id === parentId) {
+  //         people[i].Decendents = person.id
+  //       }
+  //     }
+  //   }
+  // }
+  // if (person.Decendents[0] !== undefined) {
+  //   for (let i = 0; i < person.Decendents.length; i++) {
+  //     let decendentPerson = people.filter(function (el) {
+  //       if (el.id === person.Decendents) {
+  //         return true;
+  //       }
+  //     });
+  //     decendents.push(decendentPerson)
+  //   }
+  // }
+  // displayObjects(decendents)
+  let kids = people.filter(function (el){
+    for (let i = 0; i < el.parents.length; i++){
+      if (el.parents[i] === person.id){
+        return true;
       }
     }
+  });
+  for (let i = 0; i < kids.length; i++){
+    kids[i].Relation = "Child";
+    decendents.push(kids[i]);
   }
-  if (person.Decendents[0] !== undefined) {
-    for (let i = 0; i < person.Decendents.length; i++) {
-      let decendentPerson = people.filter(function (el) {
-        if (el.id === person.Decendents) {
-          return true;
-        }
-      });
-      decendents.push(decendentPerson)
-    }
-  }
+  displayObjects(decendents);
 }
+
 
 
 
