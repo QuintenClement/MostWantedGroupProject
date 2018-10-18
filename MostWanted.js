@@ -20,7 +20,7 @@ function app(people){
 }
 // why does data returned differ
 function searchByTraits(people, usedSearch = "None") {
-  let userSearchChoice = promptFor("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation', or 'quit' to end search.", searchOptions);
+  let userSearchChoice = promptFor("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation', 'id', or 'quit' to end search.", searchOptions);
   let filteredPeople;
 
   switch(userSearchChoice) {
@@ -42,6 +42,9 @@ function searchByTraits(people, usedSearch = "None") {
     case 'occupation':
       filteredPeople = searchByOccupation(people);
       break;
+    case 'id':
+      filteredPeople = searchById(people);
+      break;
     case 'quit':
       return;
     default:
@@ -57,7 +60,7 @@ function searchByTraits(people, usedSearch = "None") {
       usedSearch = usedSearch + " " + userSearchChoice
     }
     alert("You have found " + filteredPeople.length + " people by using " + usedSearch + ". We need to refine until you have found the specific person you are looking for.");
-    searchByTraits(filteredPeople, usedSearch);
+    return searchByTraits(filteredPeople, usedSearch);
   }
 
   mainMenu(filteredPeople[0], people);
@@ -72,6 +75,17 @@ function searchByHeight(people) {
   });
   return heightArray;
 }
+
+function searchById(people) {
+  let userInputHeight = prompt('What is their ID?');
+  let idArray = people.filter(function (el) {
+    if(el.id == userInputHeight) {
+      return true;
+    }
+  });
+  return idArray;
+}
+
 
 function searchByWeight(people) {
   let userInputWeight = prompt("How much does the person weigh?");
@@ -162,6 +176,7 @@ function mainMenu(person, people){
     alert(personInfo);
     break;
     case "family":
+      immediateFamily(person, people);
     break;
     case "descendants":
     // TODO: get person's descendants
@@ -173,6 +188,41 @@ function mainMenu(person, people){
     return; // stop execution
     default:
     return mainMenu(person, people); // ask again
+  }
+}
+
+function immediateFamily (person, people) {
+  let family = [];
+  if (person.parents[0] !== undefined){
+    for (let i = 0; i < person.parents.length; i++){
+      let parentId = person.parents[i];
+      for (let i = 0; i < people.length; i++){
+        if (people[i].id === parentId){
+          people[i].Relation = "Parent"
+          family.push(people[i]);
+          
+        }
+      }
+    }
+  }
+  let spouse = people.filter(function (el){
+    if(el.id === person.currentSpouse)
+    return true;
+  });
+  for (let i = 0; i < spouse.length; i++){
+    spouse[i].Relation = "Spouse"
+    family.push(spouse[i]);
+  }
+  let kids = people.filter(function (el){
+    for (let i = 0; i < el.parents.length; i++){
+      if (el.parents[i] === person.id){
+        return true;
+      }
+    }
+  });
+  for (let i = 0; i < kids.length; i++){
+    kids[i].Relation = "Child";
+    family.push(kids[i]);
   }
 }
 
@@ -222,7 +272,7 @@ function yesNo(input){
 }
 
 function searchOptions(input){
-  let optionsArray = ['height', 'weight', 'eye color', 'gender', 'age', 'occupation', 'quit'];
+  let optionsArray = ['height', 'weight', 'eye color', 'gender', 'age', 'occupation', 'id', 'quit'];
   for (let i = 0; i < optionsArray.length; i++){
     if (optionsArray[i] == input){
       return true;
