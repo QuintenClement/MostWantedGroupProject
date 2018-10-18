@@ -149,10 +149,10 @@ function mainMenu(person, people){
 
   switch(displayOption){
     case "info":
-    // TODO: get person's info
+    let personInfo = 'Id: ' + person.id + '\n' + 'First Name: '+ person.firstName + '\n' + 'Last Name: ' + person.lastName + '\n' + 'Gender: ' + person.gender + '\n' + 'Date of Birth: ' + person.dob + '\n' + 'Height: ' + person.height + '\n' + 'Weight: ' + person.weight + '\n' + 'Eye Color: ' + person.eyeColor + '\n' + 'Occupation:' + person.occupation;
+    alert(personInfo);
     break;
     case "family":
-    // TODO: get person's family
     break;
     case "descendants":
     // TODO: get person's descendants
@@ -168,12 +168,16 @@ function mainMenu(person, people){
 }
 
 function searchByName(people){
-  var firstName = promptFor("What is the person's first name?", chars);
-  var lastName = promptFor("What is the person's last name?", chars);
-
-  // TODO: find the person using the name they entered
-
+  var userInputFirstName = promptFor("What is the person's first name?", chars);
+  var userInputLastName = promptFor("What is the person's last name?", chars);
+  let personWithName = people.filter(function (el) {
+    if(el.firstName == userInputFirstName && el.lastName == userInputLastName) {
+      return true;
+    }
+  });
+  return personWithName;
 }
+
 
 // alerts a list of people
 function displayPeople(people){
