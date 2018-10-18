@@ -201,17 +201,14 @@ function hasDecendents(person, people) {
     kids[i].Relation = "Child";
     decendents.push(kids[i]);
   }
-  displayObjects(decendents);
+  displayObjects(decendents, "Decendents: ");
 }
 
-
-
-
-function displayObjects (objects) {
+function displayObjects (objects, optionalValue = "Put something here") {
   let personRelations = "";
   for (let i = 0; i < objects.length; i++){
     let personInfo = objects[i];
-    personInfo = "Relation: " + personInfo.Relation + '\n'+ 'Id: ' + personInfo.id + '\n' + 'First Name: '+ personInfo.firstName + '\n' + 'Last Name: ' 
+    personInfo = optionalValue + personInfo.Relation + '\n'+ 'Id: ' + personInfo.id + '\n' + 'First Name: '+ personInfo.firstName + '\n' + 'Last Name: ' 
     + personInfo.lastName + '\n' + 'Gender: ' + personInfo.gender + '\n' + 'Date of Birth: ' + personInfo.dob + '\n' + 'Height: ' 
     + personInfo.height + '\n' + 'Weight: ' + personInfo.weight + '\n' + 'Eye Color: ' + personInfo.eyeColor + '\n' + 'Occupation: ' + personInfo.occupation;
     personRelations += personInfo + "\n\ \n\ ";
@@ -253,7 +250,7 @@ function immediateFamily (person, people) {
     kids[i].Relation = "Child";
     family.push(kids[i]);
   }
-  displayObjects(family);
+  displayObjects(family, "Relation: ");
 }
 
 function searchByName(people){
