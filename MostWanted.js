@@ -3,6 +3,16 @@ Build all of your functions for displaying and gathering information below (GUI)
 */
 
 // app is the function called to start the entire application
+function addAgeData (data) { 
+  let ageAddedData = data.map(function (el){
+  let ageTemp = el.dob.split("/");
+  let ageYear = ageTemp[2];
+  el.age = 2018 - ageYear;
+  return el;
+});
+  app(ageAddedData);
+}
+
 function app(people){
   var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo);
   switch(searchType){
@@ -82,6 +92,16 @@ function searchByHeight(people) {
   return heightArray;
 }
 
+function searchByAge(people) {
+  let userInputAge = prompt('What is the age you are searching for?');
+  let ageArray = people.filter(function (el) {
+    if(el.age == userInputAge) {
+      return true;
+    }
+  });
+  return ageArray;
+}
+
 function searchById(people) {
   let userInputHeight = prompt('What is their ID?');
   let idArray = people.filter(function (el) {
@@ -115,35 +135,6 @@ function searchByEyeColor(people) {
   });
   return eyeColorArray;
 }
-function searchByAge (data) {
-    let ageTemp = [];
-    let ageYear;
-    let age = [];
-    for (let i = 0; i < data.length; i++){
-        ageTemp = data[i].dob.split("/");
-        ageYear = ageTemp[2];
-        age.push(data[i].id)
-        age.push(2018 - ageYear);
-    }
-    return findPersonWithAge(age);
-}
-function findPersonWithAge (age) {
-    let userInput = prompt("What is the age you are searching for?");
-    let ageArray = []
-    for (let i = 0; i < age.length; i++){
-        if (age[i] == userInput){
-        let searchID = age[i - 1];
-            for (let i = 0; i < data.length; i++){
-                if (data[i].id == searchID){
-                  ageArray.push(data[i]);
-                }
-            }
-        }
-    }
-    return ageArray
-}
-
-
 
 function searchByGender(people) {
   let userInputGender = prompt('What is the gender of the person?');
