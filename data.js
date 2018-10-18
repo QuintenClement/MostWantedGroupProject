@@ -60,7 +60,7 @@ let data = [
 		"dob": "3/16/1938",
 		"height": 70,
 		"weight": 207,
-		"eyeColor": "black",
+		"eyeColor": "brown",
 		"occupation": "nurse",
 		"parents": [],
 		"currentSpouse": 464142841

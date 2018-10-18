@@ -4,7 +4,7 @@ Build all of your functions for displaying and gathering information below (GUI)
 
 // app is the function called to start the entire application
 function app(people){
-  var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
+  var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo);
   switch(searchType){
     case 'yes':
       let personsName = searchByName(people)
@@ -24,9 +24,9 @@ function app(people){
     break;
   }
 }
-
-function searchByTraits(people) {
-  let userSearchChoice = prompt("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.");
+// why does data returned differ
+function searchByTraits(people, usedSearch = "None") {
+  let userSearchChoice = promptFor("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation', or 'quit' to end search.", searchOptions);
   let filteredPeople;
 
   switch(userSearchChoice) {
@@ -48,16 +48,25 @@ function searchByTraits(people) {
     case 'occupation':
       filteredPeople = searchByOccupation(people);
       break;
+    case 'quit':
+      return;
     default:
       alert("You entered an invalid search type! Please try again.");
       searchByTraits(people);
       break;
   }  
-  
-  let foundPerson = filteredPeople[0];
-  searchByTraits(filteredPeople);
+  console.log(filteredPeople);
+  if (filteredPeople.length > 1){
+    if (usedSearch == "None"){
+      usedSearch = userSearchChoice;
+    }else{
+      usedSearch = usedSearch + " " + userSearchChoice
+    }
+    alert("You have found " + filteredPeople.length + " people by using " + usedSearch + ". We need to refine until you have found the specific person you are looking for.");
+    searchByTraits(filteredPeople, usedSearch);
+  }
 
-  mainMenu(foundPerson, people);
+  mainMenu(filteredPeople[0], people);
 
 }
 function searchByHeight(people) {
@@ -106,19 +115,18 @@ function searchByAge (data) {
 }
 function findPersonWithAge (age) {
     let userInput = prompt("What is the age you are searching for?");
+    let ageArray = []
     for (let i = 0; i < age.length; i++){
         if (age[i] == userInput){
         let searchID = age[i - 1];
-        let ageArray = []
             for (let i = 0; i < data.length; i++){
                 if (data[i].id == searchID){
                   ageArray.push(data[i]);
                 }
             }
-            console.log(ageArray)
-            return ageArray
         }
     }
+    return ageArray
 }
 
 
@@ -204,15 +212,30 @@ function displayPerson(person){
 
 // function that prompts and validates user input
 function promptFor(question, callback){
-  do{
-    var response = prompt(question).trim();
-  } while(!response || !callback(response));
-  return response;
+
+  let response = prompt(question);
+  let valid = callback(response);
+  if (valid === true){
+    return response;
+  }else{
+    return valid;
+  }
 }
 
 // helper function to pass into promptFor to validate yes/no answers
 function yesNo(input){
   return input.toLowerCase() == "yes" || input.toLowerCase() == "no";
+}
+
+function searchOptions(input){
+  let optionsArray = ['height', 'weight', 'eye color', 'gender', 'age', 'occupation', 'quit'];
+  for (let i = 0; i < optionsArray.length; i++){
+    if (optionsArray[i] == input){
+      return true;
+    }else if (i === optionsArray.length){
+      return false;
+    }
+  }
 }
 
 // helper function to pass in as default promptFor validation
