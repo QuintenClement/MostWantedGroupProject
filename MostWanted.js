@@ -197,6 +197,19 @@ function mainMenu(person, people){
   }
 }
 
+function displayObjects (objects) {
+  let personRelations = "";
+  for (let i = 0; i < objects.length; i++){
+    let personInfo = objects[i];
+    personInfo = "Relation: " + personInfo.Relation + '\n'+ 'Id: ' + personInfo.id + '\n' + 'First Name: '+ personInfo.firstName + '\n' + 'Last Name: ' 
+    + personInfo.lastName + '\n' + 'Gender: ' + personInfo.gender + '\n' + 'Date of Birth: ' + personInfo.dob + '\n' + 'Height: ' 
+    + personInfo.height + '\n' + 'Weight: ' + personInfo.weight + '\n' + 'Eye Color: ' + personInfo.eyeColor + '\n' + 'Occupation: ' + personInfo.occupation;
+    personRelations += personInfo + "\n\ \n\ ";
+  }
+  console.log(personRelations);
+  alert(personRelations);
+}
+
 function immediateFamily (person, people) {
   let family = [];
   if (person.parents[0] !== undefined){
@@ -230,6 +243,7 @@ function immediateFamily (person, people) {
     kids[i].Relation = "Child";
     family.push(kids[i]);
   }
+  displayObjects(family);
 }
 
 function searchByName(people){
