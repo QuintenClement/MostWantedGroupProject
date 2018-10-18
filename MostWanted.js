@@ -85,13 +85,36 @@ function searchByEyeColor(people) {
   });
   return eyeColorArray;
 }
-
-function searchByAge(people) {
-  let userInputAge = prompt('How old is the person?');
-  let ageArray = people.filter(function (el) {
-    if(el.)
-  })
+function searchByAge (data) {
+    let ageTemp = [];
+    let ageYear;
+    let age = [];
+    for (let i = 0; i < data.length; i++){
+        ageTemp = data[i].dob.split("/");
+        ageYear = ageTemp[2];
+        age.push(data[i].id)
+        age.push(2018 - ageYear);
+    }
+    return findPersonWithAge(age);
 }
+function findPersonWithAge (age) {
+    let userInput = prompt("What is the age you are searching for?");
+    for (let i = 0; i < age.length; i++){
+        if (age[i] == userInput){
+        let searchID = age[i - 1];
+        let ageArray = []
+            for (let i = 0; i < data.length; i++){
+                if (data[i].id == searchID){
+                  ageArray.push(data[i]);
+                }
+            }
+            console.log(ageArray)
+            return ageArray
+        }
+    }
+}
+
+
 
 function searchByGender(people) {
   let userInputGender = prompt('What is the gender of the person?');
