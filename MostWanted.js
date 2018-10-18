@@ -196,6 +196,31 @@ function mainMenu(person, people){
     return mainMenu(person, people); // ask again
   }
 }
+function hasDecendents(person, people) {
+  let decendents = [];
+  if (person.parents[0] !== undefined) {
+    for (let i = 0; i < person.parents.length; i++) {
+      let parentId = person.parents[i];
+      for (let j = 0; j < people.length; j++) {
+        if (people[i].id === parentId) {
+          people[i].Decendents = person.id
+        }
+      }
+    }
+  }
+  if (person.Decendents[0] !== undefined) {
+    for (let i = 0; i < person.Decendents.length; i++) {
+      let decendentPerson = people.filter(function (el) {
+        if (el.id === person.Decendents) {
+          return true;
+        }
+      });
+      decendents.push(decendentPerson)
+    }
+  }
+}
+
+
 
 function immediateFamily (person, people) {
   let family = [];
