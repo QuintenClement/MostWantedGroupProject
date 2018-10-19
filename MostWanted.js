@@ -68,7 +68,6 @@ function searchByTraits(people, usedSearch = "None") {
       searchByTraits(people);
       break;
   }  
-  console.log(filteredPeople);
   if (filteredPeople.length > 1){
     if (usedSearch == "None"){
       usedSearch = userSearchChoice;
@@ -176,7 +175,9 @@ function mainMenu(person, people){
       immediateFamily(person, people);
     break;
     case "decendents":
-      hasDecendents(person, people);
+      let finalDecendents = [];
+      finalDecendents = hasDecendents(person, people, finalDecendents);
+      displayObjects(finalDecendents);
     break;
     case "restart":
       app(people); // restart
@@ -188,33 +189,27 @@ function mainMenu(person, people){
   }
 }
 
-function hasDecendents(person, people) {
-  let decendents = [];
-  let kids = people.filter(function (el){
-    for (let i = 0; i < el.parents.length; i++){
-      if (el.parents[i] === person.id){
-        return true;
-      }
+function hasDecendents(person, people, finalDecendents) {
+  for (let i = 0; i < people.length; i++){
+    if (person.id === people[i].parents[0] || person.id === people[i].parents[1]){
+      finalDecendents.push(people[i]);
+      people[i].Relation = "Decendent";
+      hasDecendents(people[i], people, finalDecendents);
     }
-  });
-  for (let i = 0; i < kids.length; i++){
-    kids[i].Relation = "Child";
-    decendents.push(kids[i]);
   }
-  displayObjects(decendents, "Decendents: ");
+  return finalDecendents;
 }
 
-function displayObjects (objects, optionalValue = "Put something here") {
+function displayObjects (objects) {
   let personRelations = "";
   for (let i = 0; i < objects.length; i++){
     let personInfo = objects[i];
-    personInfo = optionalValue + personInfo.Relation + '\n'+ 'Id: ' + personInfo.id + '\n' + 'First Name: '+ personInfo.firstName + '\n' + 'Last Name: ' 
+    personInfo = 'Relation: ' + personInfo.Relation + '\n'+ 'Id: ' + personInfo.id + '\n' + 'First Name: '+ personInfo.firstName + '\n' + 'Last Name: ' 
     + personInfo.lastName + '\n' + 'Gender: ' + personInfo.gender + '\n' + 'Date of Birth: ' + personInfo.dob + '\n' + 'Height: ' 
     + personInfo.height + '\n' + 'Weight: ' + personInfo.weight + '\n' + 'Eye Color: ' + personInfo.eyeColor + '\n' + 'Occupation: ' + personInfo.occupation;
     personRelations += personInfo + "\n\ \n\ ";
   }
   console.log(personRelations);
-  alert(personRelations);
 }
 
 function immediateFamily (person, people) {
@@ -224,7 +219,7 @@ function immediateFamily (person, people) {
       let parentId = person.parents[i];
       for (let i = 0; i < people.length; i++){
         if (people[i].id === parentId){
-          people[i].Relation = "Parent"
+          people[i].Relation = "Parent";
           family.push(people[i]);
           
         }
